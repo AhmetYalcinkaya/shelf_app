@@ -1,24 +1,33 @@
-import { StyleSheet, Text, useColorScheme } from 'react-native'
-import { Stack } from 'expo-router'
+import { Stack } from "expo-router"
 import { Colors } from "../constants/Colors"
+import { useColorScheme } from "react-native"
+import { StatusBar } from "expo-status-bar"
+import { UserProvider } from "../contexts/UserContext"
+import { BooksProvider } from "../contexts/BooksContext"
 
-
-const RootLayout = () => {
-    const colorScheme=useColorScheme()
-    const theme = Colors[colorScheme] ?? Colors.light
+export default function RootLayout() {
+  const colorScheme = useColorScheme()
+  const theme = Colors[colorScheme] ?? Colors.light
 
   return (
-      <Stack screenOptions={{
-           headerStyle: { backgroundColor: theme.navBackground },
+    <UserProvider>
+      <BooksProvider>
+        <StatusBar value="auto" />
+        <Stack screenOptions={{
+          headerStyle: { backgroundColor: theme.navBackground },
           headerTintColor: theme.title,
         }}>
-            <Stack.Screen name='index' options={{title:'Home'}}/>
-             <Stack.Screen name='about' options={{title:'About'}}/>
-              <Stack.Screen name='Contact' options={{title:'Contact'}}/>
-              </Stack>  
+          {/* Groups */}
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+
+          {/* Individual Screens */}
+          <Stack.Screen name="index" options={{ title: "Home" }} />
+
+          {/* Book details screen */}
+          {/* <Stack.Screen name="books/[id]" options={} */}
+        </Stack>
+      </BooksProvider>
+    </UserProvider>
   )
 }
-
-export default RootLayout
-
-const styles = StyleSheet.create({})
